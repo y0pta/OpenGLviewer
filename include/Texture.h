@@ -18,14 +18,18 @@ class Texture {
 
     public:
         Texture(const std::string& loadPath);
+        Texture(){};
         ~Texture() {};
 
+        bool load(const std::string& loadPath);
         static Texture& instance(TextureType type);
         void bind(GLenum slot = GL_TEXTURE0) const
             { glActiveTexture(slot); glBindTexture(GL_TEXTURE_2D, id); }
+        bool isInitialized() const {return  initialized;}
 
     protected:
-        unsigned int id;
+        unsigned int id = 0;
+        bool initialized = 0;
 };
 
 

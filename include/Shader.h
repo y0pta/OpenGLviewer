@@ -21,6 +21,7 @@ public:
     enum ShaderType{
         eAxes,
         eBoxDemo,
+        eMesh,
         // Coord + color as input
         eCustom
     };

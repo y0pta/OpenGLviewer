@@ -11,7 +11,7 @@
 #endif
 #include <iostream>
 
-Texture::Texture(const std::string& loadPath) {
+bool Texture::load(const std::string& loadPath){
     // Gen textures
     glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);
@@ -31,11 +31,19 @@ Texture::Texture(const std::string& loadPath) {
     if (data){
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+        initialized = true;
     }
     else{
         std::cout << "Failed to load texture" << std::endl;
+        initialized = false;
     }
     stbi_image_free(data);
+
+    return initialized;
+}
+
+Texture::Texture(const std::string& loadPath) {
+    initialized = load(loadPath);
 }
 
 Texture& Texture::instance(TextureType type) {

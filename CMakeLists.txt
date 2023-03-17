@@ -19,8 +19,6 @@ set(GLEW_INCLUDE_DIRS "D:/LIBS/glew-2.1.0/include")
 
 #sources
 set(SOURCES main.cpp
-           # include/Mesh.cpp
-          #  include/Mesh.h
             3rdparty/stb/stb_image.cpp
             include/glfw_helpfunc.h
             include/Camera.cpp
@@ -32,12 +30,15 @@ set(SOURCES main.cpp
             include/Texture.cpp
             include/Texture.h
             include/Primitives.cpp
-            include/Primitives.h)
+            include/Primitives.h
+            include/Mesh.cpp
+            include/Mesh.h
+        )
 
 add_executable(opengl_prj ${SOURCES})
 target_link_directories(opengl_prj PUBLIC ${GLEW_LIB_DIRS}
                                         "3rdparty/lib")
 target_include_directories(opengl_prj PUBLIC ${GLEW_INCLUDE_DIRS}
                                             "3rdparty")
-target_link_libraries(opengl_prj OpenGL::GL glew32 glfw glm)
+target_link_libraries(opengl_prj OpenGL::GL glew32 glfw glm assimp)
 

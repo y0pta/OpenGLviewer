@@ -7,11 +7,14 @@ Shader& Shader::instance(ShaderType type)
 {
     static Shader axes("../shaders/pos_color.vs", "../shaders/pos_color.fs");
     static Shader boxDemo("../shaders/box_demo.vs", "../shaders/box_demo.fs");
+    static Shader mesh("../shaders/mesh.vs", "../shaders/mesh.fs");
     switch (type) {
         case eAxes:
             return axes;
         case eBoxDemo:
             return boxDemo;
+        case eMesh:
+            return mesh;
         default:
             axes;
     }
