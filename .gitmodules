@@ -1,0 +1,4 @@
+[submodule "3rdparty/assimp"]
+	path = 3rdparty/assimp
+	url = git@github.com:assimp/assimp.git
+	branch = master
