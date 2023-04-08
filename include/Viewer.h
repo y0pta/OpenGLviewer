@@ -55,6 +55,7 @@ class Viewer{
 
         // Time and movement speed
         std::unique_ptr<Camera> camera;
+        float camera_speed = 0.01f;
 };
 
 

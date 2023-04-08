@@ -2,3 +2,6 @@
 	path = 3rdparty/assimp
 	url = git@github.com:assimp/assimp.git
 	branch = master
+[submodule "3rdparty/glfw"]
+	path = 3rdparty/glfw
+	url = https://github.com/glfw/glfw

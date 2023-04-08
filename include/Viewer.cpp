@@ -6,6 +6,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include "Primitives.h"
 #include <vector>
+#include <glm/gtc/constants.hpp>
 
 static Viewer* __viewer = nullptr;
 
@@ -42,7 +43,24 @@ void processMouseMove(Viewer& viewer, double x, double y)
     double xOffset = x - viewer.lastMouseX;
     double yOffset = viewer.lastMouseY - y; // inverted due to y axe directed from top to bottom
 
-    viewer.camera->ProcessMouseMove(x, y);
+    // apply to camera movement
+    auto wh = viewer.camera->getWH();
+
+    int screenX = x / wh.first;
+    int screenY = y / wh.second;
+    screenX -= 0.5;
+    screenY -= 0.5;
+
+    float pitch = - 90 * y;
+    pitch = glm::clamp(pitch, -89, 89);
+
+    float yaw = - 90 * x;
+    while (yaw < -179)
+        yaw += 360;
+    while (yaw > 179)
+        yaw -= 360;
+
+    viewer.camera->setRotation(pitch, yaw);
 }
 
 void processScroll(Viewer& viewer, double yOffset)
@@ -72,7 +90,24 @@ void processKey(Viewer& viewer, unsigned int key, int modifiers, int action){
         defaultClose(viewer);
     }
     else if (action == GLFW_PRESS) {
-        viewer.camera->ProcessKeyboard(key);
+        auto& camera = viewer.camera;
+        float speed = viewer.camera_speed;
+        switch (key) {
+            case GLFW_KEY_UP:
+                camera->setPosition(camera->getPosition() + camera->front() * speed);
+                break;
+            case GLFW_KEY_DOWN:
+                camera->setPosition(camera->getPosition() - camera->front() * speed);
+                break;
+            case GLFW_KEY_RIGHT:
+                camera->setPosition(camera->getPosition() + camera->right() * speed);
+                break;
+            case GLFW_KEY_LEFT:
+                camera->setPosition(camera->getPosition() - camera->right() * speed);
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -80,14 +115,17 @@ void getProcessKeys(Viewer& viewer){
     if (glfwGetKey(viewer.window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         defaultClose(viewer);
     }
+    auto& camera = viewer.camera;
+    float speed = viewer.camera_speed;
+
     if (glfwGetKey(viewer.window, GLFW_KEY_UP) == GLFW_PRESS)
-        viewer.camera->ProcessKeyboard(GLFW_KEY_UP);
+        camera->setPosition(camera->getPosition() + camera->front() * speed);
     else if (glfwGetKey(viewer.window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        viewer.camera->ProcessKeyboard(GLFW_KEY_DOWN);
+        camera->setPosition(camera->getPosition() - camera->front() * speed);
     else if (glfwGetKey(viewer.window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        viewer.camera->ProcessKeyboard(GLFW_KEY_RIGHT);
+        camera->setPosition(camera->getPosition() + camera->right() * speed);
     else if (glfwGetKey(viewer.window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        viewer.camera->ProcessKeyboard(GLFW_KEY_LEFT);
+        camera->setPosition(camera->getPosition() - camera->right() * speed);
 }
 
 Viewer::Viewer(int w, int h) : w(w), h(h)

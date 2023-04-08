@@ -1,52 +1,7 @@
-//
-// Created by Liza on 3/13/2023.
-//
-
 #include "Camera.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>
-
-void Camera::ProcessMouseMove(double x, double y)
-{
-    x /= windowWidth;
-    y /= windowHeight;
-    x -= 0.5;
-    y -= 0.5;
-
-    pitch = - 90 * y;
-    pitch = glm::clamp(pitch, -89, 89);
-
-    yaw = - 90 * x;
-    while (yaw < -179)
-        yaw += 360;
-    while (yaw > 179)
-        yaw -= 360;
-
-    std::cout << pitch << " " << yaw  << " " << std::endl;
-    std::cout << glm::to_string(position) << std::endl;
-
-}
-
-void Camera::ProcessKeyboard(int key)
-{
-    switch (key) {
-        case GLFW_KEY_UP:
-            position = position + front() * speed;
-            break;
-        case GLFW_KEY_DOWN:
-            position = position - front() * speed;
-            break;
-        case GLFW_KEY_RIGHT:
-            position = position + glm::normalize(glm::cross(front(), up)) * speed;
-            break;
-        case GLFW_KEY_LEFT:
-            position = position - glm::normalize(glm::cross(front(), up)) * speed;
-            break;
-        default:
-            break;
-    }
-}
 
 glm::mat4 Camera::getViewMatrix() const{
     return glm::lookAt(position,  position + front(), up);
