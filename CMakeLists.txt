@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.23)
 project(opengl_prj)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Map=output.map")
 
 # dependencies
 find_package(OpenGL REQUIRED)
 add_subdirectory("3rdparty/glm")
-add_subdirectory("3rdparty/glfw-3.3.8")
+add_subdirectory("3rdparty/glfw")
+add_subdirectory("3rdparty/assimp")
 
 # for glfw
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -33,7 +35,7 @@ set(SOURCES main.cpp
             include/Primitives.h
             include/Mesh.cpp
             include/Mesh.h
-        )
+        include/glfw_helpfunc.cpp)
 
 add_executable(opengl_prj ${SOURCES})
 target_link_directories(opengl_prj PUBLIC ${GLEW_LIB_DIRS}
