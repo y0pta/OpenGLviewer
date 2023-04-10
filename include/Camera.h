@@ -21,14 +21,14 @@ class Camera {
         ~Camera(){}
 
         void setWH(int w, int h){ windowWidth = w; windowHeight = h;}
-        std::pair<int, int> getWH() {return std::make_pair(windowWidth, windowHeight); }const;
+        std::pair<int, int> getWH() const {return std::make_pair(windowWidth, windowHeight); }
 
         // Vclip = Mprojection × Mview × Mmodel × Vlocal;
         glm::mat4 getViewMatrix() const;
         glm::mat4 getProjectionMatrix() const;
-        glm::vec3 getPosition() {return  position;} const;
+        glm::vec3 getPosition() const {return  position;}
         glm::vec3 front() const;
-        glm::vec3 right() {return  glm::normalize(glm::cross(front(), up));} const;
+        glm::vec3 right() const {return  glm::normalize(glm::cross(front(), up));}
 
         void setPosition(glm::vec3 pos) { position = pos;}
         void setRotation(int pitch_deg, int yaw_deg) {yaw = yaw_deg; pitch = pitch_deg;}

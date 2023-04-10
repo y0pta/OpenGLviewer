@@ -6,7 +6,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include "Primitives.h"
 #include <vector>
-#include <glm/gtc/constants.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 static Viewer* __viewer = nullptr;
 
@@ -51,10 +51,10 @@ void processMouseMove(Viewer& viewer, double x, double y)
     screenX -= 0.5;
     screenY -= 0.5;
 
-    float pitch = - 90 * y;
-    pitch = glm::clamp(pitch, -89, 89);
+    double pitch = - 90 * screenY;
+    pitch = glm::clamp(pitch, -89.0, 89.0);
 
-    float yaw = - 90 * x;
+    double yaw = - 90 * screenX;
     while (yaw < -179)
         yaw += 360;
     while (yaw > 179)
