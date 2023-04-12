@@ -36,7 +36,7 @@ void *createWindow(int w, int h, bool setCallbacks){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true); // remove for release
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // try GLFW_OPENGL_CORE_PROFILE  GLFW_OPENGL_COMPAT_PROFILE
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE); // try GLFW_OPENGL_CORE_PROFILE  GLFW_OPENGL_COMPAT_PROFILE
 
     // glfw: create window
     GLFWwindow* window = glfwCreateWindow(w, h, "Test window", NULL, NULL);
@@ -55,7 +55,7 @@ void *createWindow(int w, int h, bool setCallbacks){
     }
     else
     {
-        std::cout<< "Glew version:"<<glewGetString(GLEW_VERSION) <<std::endl;
+        std::cout<< "Glew version:"<< glewGetString(GLEW_VERSION) <<std::endl;
     }
 
     glfwSetWindowSizeCallback(window, resizeCallback);

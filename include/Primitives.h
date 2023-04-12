@@ -9,7 +9,6 @@
 #include "Texture.h"
 #include "Camera.h"
 
-
 class Primitive{
     public:
         Primitive(glm::vec3 pos = glm::vec3(0.f, 0.f, 0.f), glm::quat q = glm::vec3(0, 0, 0)):

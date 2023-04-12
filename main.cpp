@@ -1,13 +1,11 @@
 #include <iostream>
-#include <iostream>
+#include "include/glfw_helpfunc.h"
 #include "include/Viewer.h"
-
-//const int WIDTH = 800;
-//const int HEIGHT = 600;
+#include "include/Mesh.h"
 
 int main()
 {
     Viewer v;
-    v.showTest();
+    v.showTestMesh();
     return 0;
 }

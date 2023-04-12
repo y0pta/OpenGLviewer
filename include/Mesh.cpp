@@ -18,8 +18,8 @@ bool MeshEntry::init(unsigned int index, const aiMesh* paiMesh)
         const aiVector3D* pPos      = &(paiMesh->mVertices[i]);
         const aiVector3D* pNormal   = &(paiMesh->mNormals[i]);
         const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
-        const aiVector3D* pTangent = &(paiMesh->mBitangents[i]);
-        const aiVector3D* pBitangent = &(paiMesh->mBitangents[i]);
+        const aiVector3D* pTangent = paiMesh->HasTangentsAndBitangents() ? &(paiMesh->mBitangents[i]) : &Zero3D;
+        const aiVector3D* pBitangent = paiMesh->HasTangentsAndBitangents() ? &(paiMesh->mBitangents[i]) : &Zero3D;
 
         Vertex v;
         v.position = glm::vec3(pPos->x, pPos->y, pPos->z);
@@ -39,6 +39,8 @@ bool MeshEntry::init(unsigned int index, const aiMesh* paiMesh)
         indices.push_back(Face.mIndices[2]);
     }
     init(vertices, indices);
+
+    return true;
 }
 
 bool MeshEntry::init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
@@ -77,6 +79,9 @@ void MeshEntry::render() {
     glDisableVertexAttribArray(2);
 }
 
+Mesh::Mesh(const std::string& loadPath) : shader(Shader::instance(Shader::eMesh)){
+    _load(loadPath);
+}
 
 bool Mesh::_load(const std::string &loadPath){
     _clear();
@@ -105,7 +110,8 @@ bool Mesh::_load(const std::string &loadPath){
     return ret;
 }
 
-bool Mesh::_initMaterials(const aiScene* pScene, const std::string& loadPath)
+bool Mesh::
+_initMaterials(const aiScene* pScene, const std::string& loadPath)
 {
     // Extract the directory part from the file name
     std::string::size_type slashIndex = loadPath.find_last_of("/");
@@ -118,7 +124,7 @@ bool Mesh::_initMaterials(const aiScene* pScene, const std::string& loadPath)
         dir = "/";
     }
     else {
-        dir =loadPath.substr(0, slashIndex);
+        dir = loadPath.substr(0, slashIndex);
     }
 
     bool ret = true;
@@ -171,7 +177,7 @@ void Mesh::render(Camera* cam)
 {
     shader.use();
     shader.setMat4("model", glm::mat4(1.0f));
-    shader.setMat4("view", cam->getProjectionMatrix());
+    shader.setMat4("view", cam->getViewMatrix());
     shader.setMat4("projection", cam->getProjectionMatrix());
     for (auto& mesh : entries){
         mesh.render();

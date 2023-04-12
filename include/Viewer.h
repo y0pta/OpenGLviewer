@@ -1,7 +1,3 @@
-//
-// Created by Liza on 3/13/2023.
-//
-
 #ifndef OPENGL_PRJ_VIEWER_H
 #define OPENGL_PRJ_VIEWER_H
 
@@ -10,9 +6,7 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 #include "Camera.h"
-
 #include "Shader.h"
-#include "Camera.h"
 #include <memory>
 
 class Viewer{
@@ -23,7 +17,8 @@ class Viewer{
         //void processKeys();
         void terminate();
         void show();
-        void showTest();
+        void showTestBox();
+        void showTestMesh();
 
         //Callbacks
         std::function<void(Viewer& viewer, double x, double y)> callback_mouse_move;
@@ -51,7 +46,7 @@ class Viewer{
         // Keyboard & mouse data
         double lastMouseX;
         double lastMouseY;
-        int mouseWheelOffset = 0;
+        double mouseWheelOffset = 0;
 
         // Time and movement speed
         std::unique_ptr<Camera> camera;
