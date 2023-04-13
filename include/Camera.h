@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <utility>
+#include <iostream>
 
 class Camera {
     public:
@@ -27,11 +28,13 @@ class Camera {
         glm::mat4 getViewMatrix() const;
         glm::mat4 getProjectionMatrix() const;
         glm::vec3 getPosition() const {return  position;}
+        double getZoom() const {return zoom; }
         glm::vec3 front() const;
         glm::vec3 right() const {return  glm::normalize(glm::cross(front(), up));}
 
         void setPosition(glm::vec3 pos) { position = pos;}
         void setRotation(int pitch_deg, int yaw_deg) {yaw = yaw_deg; pitch = pitch_deg;}
+        void setZoom(double newZoom) { zoom = glm::max(newZoom, 0.3); std::cout << zoom << std::endl;}
 
     public:
         int fov = 60;

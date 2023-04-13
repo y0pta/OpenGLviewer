@@ -7,6 +7,7 @@
 #include "Primitives.h"
 #include <vector>
 #include <glm/gtc/type_ptr.hpp>
+#include "Mesh.h"
 
 static Viewer* __viewer = nullptr;
 
@@ -46,8 +47,8 @@ void processMouseMove(Viewer& viewer, double x, double y)
     // apply to camera movement
     auto wh = viewer.camera->getWH();
 
-    int screenX = x / wh.first;
-    int screenY = y / wh.second;
+    double screenX = x / wh.first;
+    double screenY = y / wh.second;
     screenX -= 0.5;
     screenY -= 0.5;
 
@@ -69,13 +70,10 @@ void processScroll(Viewer& viewer, double yOffset)
     /// yOffset < 0 if ZoomOt (wheel moves backward)
     ///  min = -1, max = +1
 
-    /* TODO:
-    if (viewer.activeScene){
-        viewer.mouseWheelOffset += yOffset;
-        if (viewer.mouseWheelOffset > 30) viewer.mouseWheelOffset = 30;
-        if (viewer.mouseWheelOffset < -20) viewer.mouseWheelOffset = -20;
-        viewer.activeScene->activeCamera.zoomInOut(viewer.mouseWheelOffset, viewer.lastMouseX, viewer.lastMouseY);
-    }*/
+    //std::cout << "wheel value" << yOffset/5.0 << std::endl;
+    double zoom = viewer.camera->getZoom() + yOffset / 10.0;
+
+    viewer.camera->setZoom( zoom);
 }
 
 void defaultClose(Viewer& viewer)
@@ -126,6 +124,11 @@ void getProcessKeys(Viewer& viewer){
         camera->setPosition(camera->getPosition() + camera->right() * speed);
     else if (glfwGetKey(viewer.window, GLFW_KEY_LEFT) == GLFW_PRESS)
         camera->setPosition(camera->getPosition() - camera->right() * speed);
+    else if (glfwGetKey(viewer.window, GLFW_KEY_R) == GLFW_PRESS) {
+        camera->setZoom(1);
+        camera->setPosition( glm::vec3(2.0f, 1.0f, 3.0f));
+        camera->setRotation(0,0);
+    }
 }
 
 Viewer::Viewer(int w, int h) : w(w), h(h)
@@ -142,11 +145,11 @@ Viewer::Viewer(int w, int h) : w(w), h(h)
     callback_mouse_move = processMouseMove;
     callback_mouse_scroll = processScroll;
     callback_close = defaultClose;
-    //callback_key_action = processKey;
+
+    // callbacks
     glfwSetCursorPosCallback(window, mouseMoveCallback);
     glfwSetScrollCallback(window, mouseScrollCallback);
     glfwSetWindowCloseCallback(window, closeCallback);
-    //glfwSetKeyCallback(window, keyCallback);
 
     // set cursor mode
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -157,7 +160,7 @@ Viewer::~Viewer()
     glfwTerminate();
 }
 
-void Viewer::showTest() {
+void Viewer::showTestBox() {
     // world cube positions
     glm::vec3 cubePositions[] = {
             glm::vec3(0.0f,  0.0f,  0.0f),
@@ -211,6 +214,29 @@ void Viewer::showTest() {
     }
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
+
+void Viewer::showTestMesh() {
+    //set up projection matrix
+    camera = std::make_unique<Camera>(w, h);
+    Axes axes;
+    Mesh m("../samples/meshes/backpack/backpack.obj");
+
+    while (!CLOSE_FLAG) {
+        getProcessKeys(*this);
+        // render
+        glClearColor(0.2f, 0.3f, 0.5f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
+
+        axes.render(camera.get());
+        m.render(camera.get());
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+    glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
 void Viewer::show()
 {
     /*

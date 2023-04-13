@@ -8,10 +8,11 @@ glm::mat4 Camera::getViewMatrix() const{
 }
 
 glm::mat4 Camera::getProjectionMatrix() const {
-    return glm::perspective(glm::radians(float(fov)),
+    auto projection = glm::perspective(glm::radians(float(fov / zoom)),
                             float(windowWidth) / windowHeight ,
                             0.1f,
                             100.0f);
+    return projection;
 }
 
 glm::vec3 Camera::front() const{
