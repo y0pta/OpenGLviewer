@@ -34,7 +34,7 @@ class Camera {
 
         void setPosition(glm::vec3 pos) { position = pos;}
         void setRotation(int pitch_deg, int yaw_deg) {yaw = yaw_deg; pitch = pitch_deg;}
-        void setZoom(double newZoom) { zoom = glm::max(newZoom, 0.3); std::cout << zoom << std::endl;}
+        void setZoom(double newZoom) { zoom = glm::max(newZoom, fov / 179.0 ); std::cout << zoom << std::endl;}
 
     public:
         int fov = 60;

@@ -19,6 +19,7 @@ class Viewer{
         void show();
         void showTestBox();
         void showTestMesh();
+        void showDepthTest();
 
         //Callbacks
         std::function<void(Viewer& viewer, double x, double y)> callback_mouse_move;

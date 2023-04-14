@@ -224,7 +224,7 @@ void Viewer::showTestMesh() {
     while (!CLOSE_FLAG) {
         getProcessKeys(*this);
         // render
-        glClearColor(0.2f, 0.3f, 0.5f, 1.0f);
+        glClearColor(0.4f, 0.6f, 1, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
@@ -235,6 +235,18 @@ void Viewer::showTestMesh() {
         glfwPollEvents();
     }
     glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
+void Viewer::showDepthTest() {
+    camera = std::make_unique<Camera>(w, h);
+    Axes axes;
+    Mesh m("../samples/meshes/backpack/backpack.obj");
+
+    // Depth testing
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+
 }
 
 void Viewer::show()
