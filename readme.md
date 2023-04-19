@@ -1,7 +1,13 @@
 # OpenGL viewer
 ### Description
 ----
-Simple viewer based on OpenGL.
-#### Requirements
+Simple viewer based on OpenGL. <br>
+**Features**: mesh view
+
+#### Build
 ----
-All neaded libraries, except OpenGL and GLEW could be found in 3rdparty folder. You only need to set up **GLEW_LIB_DIRS** and **GLEW_INCLUDE_DIRS** in CMake.
+> conan install . --output-folder=build --build=missing <br>
+> cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake <br>
+> cmake --build . --config Release <br>
+
+**You can vary Debug or other profiles instead Release, depending of your aims*

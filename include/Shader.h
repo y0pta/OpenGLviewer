@@ -30,7 +30,8 @@ public:
     unsigned int ID;
     static Shader& instance(ShaderType type);
 public:
-    Shader(const char* vertexPath, const char* fragmentPath);
+    //Shader(const char* vertexPath, const char* fragmentPath);
+    Shader(const std::string& vertexPath, const std::string &fragmentPath);
 
     ~Shader();
 
@@ -81,5 +82,7 @@ private:
 
     void checkCompileErrors(GLuint shader, std::string type);
 };
+
+std::string make_path(char* dir, char* fname);
 
 #endif //OPENGL_PRJ_SHADER_H

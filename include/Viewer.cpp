@@ -8,6 +8,9 @@
 #include <vector>
 #include <glm/gtc/type_ptr.hpp>
 #include "Mesh.h"
+#ifndef RESOURCE_DIR
+    #define RESOURCE_DIR ""
+#endif
 
 static Viewer* __viewer = nullptr;
 
@@ -219,7 +222,7 @@ void Viewer::showTestMesh() {
     //set up projection matrix
     camera = std::make_unique<Camera>(w, h);
     Axes axes;
-    Mesh m("../samples/meshes/backpack/backpack.obj");
+    Mesh m(make_path(RESOURCE_DIR, "samples/meshes/backpack/backpack.obj"));
 
     while (!CLOSE_FLAG) {
         getProcessKeys(*this);
@@ -240,7 +243,7 @@ void Viewer::showTestMesh() {
 void Viewer::showDepthTest() {
     camera = std::make_unique<Camera>(w, h);
     Axes axes;
-    Mesh m("../samples/meshes/backpack/backpack.obj");
+    Mesh m(strcat(RESOURCE_DIR, "samples/meshes/backpack/backpack.obj"));
 
     // Depth testing
     glEnable(GL_DEPTH_TEST);

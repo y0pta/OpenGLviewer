@@ -2,12 +2,23 @@
 // Created by Liza on 3/16/2023.
 //
 #include "Shader.h"
+#ifndef RESOURCE_DIR
+    #define RESOURCE_DIR ""
+#endif
+
+std::string make_path(char* dir, char* fname)
+{
+    std::string path(dir);
+    path.append("/");
+    path.append(fname);
+    return path;
+}
 
 Shader& Shader::instance(ShaderType type)
 {
-    static Shader axes("../shaders/pos_color.vs", "../shaders/pos_color.fs");
-    static Shader boxDemo("../shaders/box_demo.vs", "../shaders/box_demo.fs");
-    static Shader mesh("../shaders/mesh.vs", "../shaders/mesh.fs");
+    static Shader axes(make_path(RESOURCE_DIR, "shaders/pos_color.vs"), make_path(RESOURCE_DIR, "shaders/pos_color.fs"));
+    static Shader boxDemo(make_path(RESOURCE_DIR, "shaders/box_demo.vs"), make_path(RESOURCE_DIR, "shaders/box_demo.fs"));
+    static Shader mesh(make_path( RESOURCE_DIR,  "shaders/mesh.vs") , make_path( RESOURCE_DIR, "shaders/mesh.fs"));
     switch (type) {
         case eAxes:
             return axes;
@@ -20,7 +31,7 @@ Shader& Shader::instance(ShaderType type)
     }
 }
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader(const std::string& vertexPath, const std::string &fragmentPath)
 {
     std::string vertexCode;
     std::string fragmentCode;
